@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Health Report — Alok Agrawal | June 2026</title>
+  <style>
+    :root {
+      --green:  #16a34a;
+      --green-light: #dcfce7;
+      --red:    #dc2626;
+      --red-light: #fee2e2;
+      --yellow: #d97706;
+      --yellow-light: #fef3c7;
+      --blue:   #2563eb;
+      --blue-light: #dbeafe;
+      --gray:   #6b7280;
+      --gray-light: #f3f4f6;
+      --dark:   #111827;
+      --card-bg: #ffffff;
+      --border: #e5e7eb;
+      --radius: 12px;
+      --shadow: 0 2px 12px rgba(0,0,0,0.08);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: #f0f4f8;
+      color: var(--dark);
+      line-height: 1.6;
+    }
+
+    /* ── HEADER ── */
+    .header {
+      background: linear-gradient(135deg, #1e40af 0%, #0f766e 100%);
+      color: white;
+      padding: 40px 24px 32px;
+      text-align: center;
+    }
+    .header .badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.2);
+      border: 1px solid rgba(255,255,255,0.35);
+      border-radius: 20px;
+      padding: 4px 14px;
+      font-size: 12px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .header h1 { font-size: clamp(22px, 4vw, 34px); font-weight: 700; margin-bottom: 6px; }
+    .header p  { font-size: 14px; opacity: 0.85; }
+    .header .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+      margin-top: 20px;
+    }
+    .header .meta span {
+      background: rgba(255,255,255,0.15);
+      border-radius: 8px;
+      padding: 6px 14px;
+      font-size: 13px;
+    }
+
+    /* ── LAYOUT ── */
+    .container { max-width: 960px; margin: 0 auto; padding: 28px 16px 60px; }
+
+    /* ── OVERALL SCORE CARD ── */
+    .score-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+    .score-item {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 16px 12px;
+      text-align: center;
+      border-top: 4px solid var(--border);
+    }
+    .score-item.good   { border-top-color: var(--green); }
+    .score-item.warn   { border-top-color: var(--yellow); }
+    .score-item.bad    { border-top-color: var(--red); }
+    .score-item .icon  { font-size: 28px; margin-bottom: 6px; }
+    .score-item .label { font-size: 11px; color: var(--gray); text-transform: uppercase; letter-spacing: 0.5px; }
+    .score-item .status { font-size: 13px; font-weight: 700; margin-top: 4px; }
+    .score-item.good  .status { color: var(--green); }
+    .score-item.warn  .status { color: var(--yellow); }
+    .score-item.bad   .status { color: var(--red); }
+
+    /* ── SECTION TITLES ── */
+    .section-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin: 32px 0 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .section-title::after {
+      content: '';
+      flex: 1;
+      height: 2px;
+      background: var(--border);
+      border-radius: 2px;
+    }
+
+    /* ── CARDS ── */
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 20px 22px;
+      margin-bottom: 14px;
+      border-left: 5px solid var(--border);
+    }
+    .card.good   { border-left-color: var(--green); }
+    .card.warn   { border-left-color: var(--yellow); }
+    .card.danger { border-left-color: var(--red); }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .card-header h3 { font-size: 16px; font-weight: 700; }
+    .pill {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .pill-green  { background: var(--green-light);  color: var(--green); }
+    .pill-yellow { background: var(--yellow-light); color: var(--yellow); }
+    .pill-red    { background: var(--red-light);    color: var(--red); }
+    .pill-blue   { background: var(--blue-light);   color: var(--blue); }
+
+    /* ── DATA TABLE ── */
+    .data-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 8px; }
+    .data-table th {
+      background: var(--gray-light);
+      padding: 8px 12px;
+      text-align: left;
+      font-weight: 600;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      color: var(--gray);
+    }
+    .data-table td { padding: 9px 12px; border-bottom: 1px solid var(--border); }
+    .data-table tr:last-child td { border-bottom: none; }
+    .data-table tr:hover td { background: #fafafa; }
+    .val-normal { color: var(--green);  font-weight: 700; }
+    .val-high   { color: var(--red);    font-weight: 700; }
+    .val-low    { color: var(--yellow); font-weight: 700; }
+    .val-border { color: var(--yellow); font-weight: 700; }
+
+    /* ── HIGHLIGHT BOX ── */
+    .highlight {
+      border-radius: 8px;
+      padding: 12px 16px;
+      font-size: 13.5px;
+      margin-top: 10px;
+    }
+    .highlight.green  { background: var(--green-light);  color: #166534; }
+    .highlight.yellow { background: var(--yellow-light); color: #92400e; }
+    .highlight.red    { background: var(--red-light);    color: #991b1b; }
+    .highlight.blue   { background: var(--blue-light);   color: #1e40af; }
+    .highlight strong { font-weight: 700; }
+
+    /* ── LIFESTYLE GRID ── */
+    .lifestyle-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 14px;
+      margin-top: 6px;
+    }
+    .ls-card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 18px 18px;
+    }
+    .ls-card h4 { font-size: 14px; font-weight: 700; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+    .ls-card ul { padding-left: 18px; font-size: 13px; color: #374151; }
+    .ls-card ul li { margin-bottom: 6px; line-height: 1.5; }
+
+    /* ── ACTION PLAN ── */
+    .action-list { list-style: none; padding: 0; }
+    .action-list li {
+      display: flex;
+      gap: 14px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+      align-items: flex-start;
+    }
+    .action-list li:last-child { border-bottom: none; }
+    .action-num {
+      min-width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: #1e40af;
+      color: white;
+      font-size: 13px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .action-text strong { font-size: 14px; display: block; margin-bottom: 3px; }
+    .action-text span   { font-size: 13px; color: var(--gray); }
+
+    /* ── DISCLAIMER ── */
+    .disclaimer {
+      background: #f9fafb;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      font-size: 12px;
+      color: var(--gray);
+      margin-top: 32px;
+      text-align: center;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding: 24px;
+      font-size: 12px;
+      color: var(--gray);
+      border-top: 1px solid var(--border);
+    }
+
+    /* ── PROGRESS BAR ── */
+    .progress-wrap { margin-top: 6px; }
+    .progress-label { font-size: 12px; color: var(--gray); display: flex; justify-content: space-between; margin-bottom: 4px; }
+    .progress-bar { height: 8px; background: #e5e7eb; border-radius: 4px; overflow: hidden; }
+    .progress-fill { height: 100%; border-radius: 4px; transition: width 0.4s; }
+
+    @media (max-width: 600px) {
+      .card-header { flex-direction: column; align-items: flex-start; }
+      .data-table th, .data-table td { padding: 7px 8px; font-size: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════ HEADER ══════════════════════ -->
+<div class="header">
+  <div class="badge">Annual Full Body Health Check</div>
+  <h1>Health Report Analysis</h1>
+  <p>Comprehensive interpretation of your Apollo Clinic diagnostics</p>
+  <div class="meta">
+    <span>👤 Mr. Alok Agrawal</span>
+    <span>🎂 Age: 46 Years | Male</span>
+    <span>📅 16 June 2026</span>
+    <span>🏥 Apollo Clinic, Sadashiv Peth, Pune</span>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- ══════════════════════ OVERALL SUMMARY GRID ══════════════════════ -->
+  <div class="section-title">📊 Overall Health Snapshot</div>
+  <div class="score-grid">
+    <div class="score-item good">
+      <div class="icon">❤️</div>
+      <div class="label">Heart</div>
+      <div class="status">Excellent</div>
+    </div>
+    <div class="score-item good">
+      <div class="icon">🩸</div>
+      <div class="label">Blood Sugar</div>
+      <div class="status">Excellent</div>
+    </div>
+    <div class="score-item good">
+      <div class="icon">🫘</div>
+      <div class="label">Kidneys</div>
+      <div class="status">Excellent</div>
+    </div>
+    <div class="score-item good">
+      <div class="icon">🫁</div>
+      <div class="label">Lungs</div>
+      <div class="status">Normal</div>
+    </div>
+    <div class="score-item good">
+      <div class="icon">🦠</div>
+      <div class="label">Liver</div>
+      <div class="status">Normal</div>
+    </div>
+    <div class="score-item good">
+      <div class="icon">🦋</div>
+      <div class="label">Thyroid</div>
+      <div class="status">Normal</div>
+    </div>
+    <div class="score-item bad">
+      <div class="icon">⚠️</div>
+      <div class="label">Cholesterol</div>
+      <div class="status">Needs Care</div>
+    </div>
+    <div class="score-item warn">
+      <div class="icon">🔬</div>
+      <div class="label">Eosinophils</div>
+      <div class="status">Elevated</div>
+    </div>
+    <div class="score-item warn">
+      <div class="icon">💊</div>
+      <div class="label">Vitamin B12</div>
+      <div class="status">Low-Normal</div>
+    </div>
+    <div class="score-item good">
+      <div class="icon">🌞</div>
+      <div class="label">Vitamin D</div>
+      <div class="status">Sufficient</div>
+    </div>
+    <div class="score-item good">
+      <div class="icon">🧬</div>
+      <div class="label">PSA (Prostate)</div>
+      <div class="status">Excellent</div>
+    </div>
+    <div class="score-item good">
+      <div class="icon">🚰</div>
+      <div class="label">Urine</div>
+      <div class="status">Normal</div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════ CARDIOLOGY ══════════════════════ -->
+  <div class="section-title">❤️ Cardiology & Chest</div>
+
+  <div class="card good">
+    <div class="card-header">
+      <h3>🫀 2D Echocardiogram (Heart Ultrasound)</h3>
+      <span class="pill pill-green">Excellent</span>
+    </div>
+    <table class="data-table">
+      <tr><th>Finding</th><th>Result</th><th>Normal</th><th>Interpretation</th></tr>
+      <tr><td>Ejection Fraction (LVEF)</td><td class="val-normal">60%</td><td>≥55%</td><td>Excellent heart pump function</td></tr>
+      <tr><td>Cardiac Chambers</td><td class="val-normal">Normal</td><td>Normal</td><td>No enlargement</td></tr>
+      <tr><td>Wall Motion</td><td class="val-normal">No abnormality</td><td>Normal</td><td>No ischemia / blockage sign</td></tr>
+      <tr><td>Mitral Valve</td><td class="val-normal">Trivial regurgitation</td><td>Normal</td><td>Clinically insignificant — very common</td></tr>
+      <tr><td>Aortic / Tricuspid Valve</td><td class="val-normal">Normal</td><td>Normal</td><td>No stenosis or regurgitation</td></tr>
+      <tr><td>Pulmonary Hypertension</td><td class="val-normal">None</td><td>None</td><td>Lung pressure normal</td></tr>
+      <tr><td>Pericardial Effusion / Clots</td><td class="val-normal">None</td><td>None</td><td>No fluid around heart</td></tr>
+    </table>
+    <div class="highlight green" style="margin-top:12px">
+      <strong>Bottom line:</strong> Your heart is in excellent structural and functional condition. Ejection Fraction of 60% is perfectly normal. The trivial mitral regurgitation is a common benign finding seen in ~10% of healthy adults and requires no treatment.
+    </div>
+  </div>
+
+  <div class="card good">
+    <div class="card-header">
+      <h3>📈 ECG (Electrocardiogram)</h3>
+      <span class="pill pill-green">Normal</span>
+    </div>
+    <p style="font-size:13.5px">Normal sinus rhythm at <strong>73 beats per minute</strong> — ideal resting heart rate. No arrhythmia, no conduction abnormality.</p>
+  </div>
+
+  <div class="card good">
+    <div class="card-header">
+      <h3>🫁 Chest X-Ray (PA View)</h3>
+      <span class="pill pill-green">Normal</span>
+    </div>
+    <p style="font-size:13.5px">No focal lesion, normal heart size (cardiothoracic ratio), clear lung fields, normal mediastinum. <strong>No significant abnormality detected.</strong></p>
+  </div>
+
+  <!-- ══════════════════════ BLOOD SUGAR ══════════════════════ -->
+  <div class="section-title">🩸 Diabetes / Blood Sugar</div>
+
+  <div class="card good">
+    <div class="card-header">
+      <h3>Glucose & HbA1c</h3>
+      <span class="pill pill-green">Excellent — No Diabetes Risk</span>
+    </div>
+    <table class="data-table">
+      <tr><th>Test</th><th>Your Value</th><th>Normal Range</th><th>Status</th></tr>
+      <tr><td>Fasting Glucose</td><td class="val-normal">92 mg/dL</td><td>70–100 mg/dL</td><td>✅ Normal</td></tr>
+      <tr><td>HbA1c (3-month avg sugar)</td><td class="val-normal">4.8%</td><td>&lt;5.7% (Non-diabetic)</td><td>✅ Excellent</td></tr>
+      <tr><td>Estimated Average Glucose</td><td class="val-normal">91 mg/dL</td><td>—</td><td>✅ Excellent</td></tr>
+    </table>
+    <div class="highlight green">
+      <strong>Bottom line:</strong> Zero risk of diabetes currently. HbA1c of 4.8% is outstanding — it means your average blood sugar over the past 3 months has been perfectly controlled.
+    </div>
+  </div>
+
+  <!-- ══════════════════════ CHOLESTEROL ══════════════════════ -->
+  <div class="section-title">⚠️ Lipid Profile (Cholesterol)</div>
+
+  <div class="card danger">
+    <div class="card-header">
+      <h3>Lipid / Cholesterol Panel</h3>
+      <span class="pill pill-red">Action Required</span>
+    </div>
+    <table class="data-table">
+      <tr><th>Test</th><th>Your Value</th><th>Ideal Target</th><th>Status</th></tr>
+      <tr><td>Total Cholesterol</td><td class="val-border">202 mg/dL</td><td>&lt;200 mg/dL</td><td>⚠️ Borderline High</td></tr>
+      <tr><td>LDL — "Bad" Cholesterol</td><td class="val-high">144.84 mg/dL</td><td>&lt;100 mg/dL</td><td>🔴 High</td></tr>
+      <tr><td>HDL — "Good" Cholesterol</td><td class="val-high">38 mg/dL</td><td>≥40 mg/dL (Men)</td><td>🔴 Low</td></tr>
+      <tr><td>Non-HDL Cholesterol</td><td class="val-high">164 mg/dL</td><td>&lt;130 mg/dL</td><td>🔴 High</td></tr>
+      <tr><td>Triglycerides</td><td class="val-normal">96 mg/dL</td><td>&lt;150 mg/dL</td><td>✅ Normal</td></tr>
+      <tr><td>VLDL Cholesterol</td><td class="val-normal">19.26 mg/dL</td><td>&lt;30 mg/dL</td><td>✅ Normal</td></tr>
+      <tr><td>Cholesterol / HDL Ratio</td><td class="val-high">5.33</td><td>&lt;4.97</td><td>🔴 High</td></tr>
+      <tr><td>Atherogenic Index (AIP)</td><td class="val-normal">0.050</td><td>&lt;0.11</td><td>✅ Normal</td></tr>
+    </table>
+    <div class="highlight red">
+      <strong>Why this matters:</strong> High LDL (bad cholesterol) at age 46, combined with low HDL (good cholesterol), is a significant long-term cardiovascular risk factor. Despite your heart being healthy today, sustained high LDL deposits plaque in arteries gradually over years. Your Chol/HDL ratio of 5.33 exceeds the safe limit. <strong>This is the #1 priority to address.</strong>
+    </div>
+
+    <div class="progress-wrap" style="margin-top:14px">
+      <div class="progress-label"><span>Your LDL: 144.84</span><span>Target: &lt;100</span></div>
+      <div class="progress-bar"><div class="progress-fill" style="width:72%; background:var(--red)"></div></div>
+    </div>
+    <div class="progress-wrap" style="margin-top:10px">
+      <div class="progress-label"><span>Your HDL: 38</span><span>Target: ≥60 (Ideal)</span></div>
+      <div class="progress-bar"><div class="progress-fill" style="width:38%; background:var(--yellow)"></div></div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════ BLOOD COUNT ══════════════════════ -->
+  <div class="section-title">🔬 Blood Count (Haematology)</div>
+
+  <div class="card warn">
+    <div class="card-header">
+      <h3>Complete Blood Count (CBC)</h3>
+      <span class="pill pill-yellow">Mostly Normal — 1 Flag</span>
+    </div>
+    <table class="data-table">
+      <tr><th>Test</th><th>Your Value</th><th>Normal Range</th><th>Status</th></tr>
+      <tr><td>Haemoglobin</td><td class="val-normal">16.3 g/dL</td><td>13–17</td><td>✅ Normal</td></tr>
+      <tr><td>PCV (Haematocrit)</td><td class="val-normal">49.3%</td><td>40–50%</td><td>✅ Normal</td></tr>
+      <tr><td>RBC Count</td><td class="val-normal">4.85 million/cu.mm</td><td>4.5–5.5</td><td>✅ Normal</td></tr>
+      <tr><td>MCV (Cell Size)</td><td class="val-border">101.7 fL</td><td>83–101 fL</td><td>⚠️ Mildly High (Macrocytosis)</td></tr>
+      <tr><td>MCH</td><td class="val-border">33.7 pg</td><td>27–32 pg</td><td>⚠️ Mildly High</td></tr>
+      <tr><td>MCHC</td><td class="val-normal">33.1 g/dL</td><td>31.5–34.5</td><td>✅ Normal</td></tr>
+      <tr><td>Total WBC Count</td><td class="val-normal">6,290 cells/cu.mm</td><td>4,000–10,000</td><td>✅ Normal</td></tr>
+      <tr><td>Neutrophils %</td><td class="val-normal">50.6%</td><td>40–80%</td><td>✅ Normal</td></tr>
+      <tr><td>Lymphocytes %</td><td class="val-normal">32.4%</td><td>20–40%</td><td>✅ Normal</td></tr>
+      <tr><td>Eosinophils %</td><td class="val-high">11.5%</td><td>1–6%</td><td>🔴 Elevated</td></tr>
+      <tr><td>Absolute Eosinophils</td><td class="val-high">723 cells/cu.mm</td><td>20–500</td><td>🔴 Elevated</td></tr>
+      <tr><td>NLR (Inflammation Marker)</td><td class="val-normal">1.56</td><td>0.78–3.53</td><td>✅ Excellent (Low risk)</td></tr>
+      <tr><td>Platelet Count</td><td class="val-normal">184,000</td><td>150,000–410,000</td><td>✅ Normal</td></tr>
+      <tr><td>ESR</td><td class="val-normal">9 mm/hr</td><td>0–15</td><td>✅ No inflammation</td></tr>
+    </table>
+
+    <div class="highlight yellow" style="margin-top:12px">
+      <strong>Eosinophilia (11.5%):</strong> Elevated eosinophils are most commonly caused by (1) allergic conditions — asthma, rhinitis, skin allergies; or (2) intestinal parasites/worms — very prevalent in India. Peripheral smear confirmed mild eosinophilia. Needs follow-up investigation.
+    </div>
+    <div class="highlight yellow" style="margin-top:8px">
+      <strong>Macrocytosis (MCV 101.7):</strong> Red blood cells are slightly larger than normal. Combined with borderline-low B12 (259 pg/mL, lower half of range), this is most likely early B12/Folate insufficiency — very common in vegetarians. The peripheral smear confirms macrocytes.
+    </div>
+  </div>
+
+  <!-- ══════════════════════ LIVER ══════════════════════ -->
+  <div class="section-title">🫀 Liver Function Tests (LFT)</div>
+
+  <div class="card good">
+    <div class="card-header">
+      <h3>Liver Function Panel</h3>
+      <span class="pill pill-green">All Normal</span>
+    </div>
+    <table class="data-table">
+      <tr><th>Test</th><th>Your Value</th><th>Normal Range</th><th>Status</th></tr>
+      <tr><td>Total Bilirubin</td><td class="val-normal">0.68 mg/dL</td><td>0–1.2</td><td>✅ Normal</td></tr>
+      <tr><td>Direct Bilirubin</td><td class="val-normal">0.25 mg/dL</td><td>0–0.3</td><td>✅ Normal</td></tr>
+      <tr><td>SGPT / ALT (Liver enzyme)</td><td class="val-normal">26.4 U/L</td><td>10–50</td><td>✅ Normal</td></tr>
+      <tr><td>SGOT / AST (Liver enzyme)</td><td class="val-normal">24.2 U/L</td><td>10–50</td><td>✅ Normal</td></tr>
+      <tr><td>Alkaline Phosphatase</td><td class="val-normal">105 U/L</td><td>40–129</td><td>✅ Normal</td></tr>
+      <tr><td>Total Protein</td><td class="val-normal">7.74 g/dL</td><td>6.4–8.3</td><td>✅ Normal</td></tr>
+      <tr><td>Albumin</td><td class="val-normal">4.67 g/dL</td><td>3.5–5.2</td><td>✅ Normal</td></tr>
+      <tr><td>Globulin</td><td class="val-normal">3.07 g/dL</td><td>2.0–3.5</td><td>✅ Normal</td></tr>
+    </table>
+    <div class="highlight green">
+      <strong>Bottom line:</strong> Liver is functioning perfectly. No hepatocellular damage, no cholestasis, no protein synthesis impairment. Excellent result.
+    </div>
+  </div>
+
+  <!-- ══════════════════════ KIDNEY ══════════════════════ -->
+  <div class="section-title">🫘 Kidney Function</div>
+
+  <div class="card good">
+    <div class="card-header">
+      <h3>Kidney Function & Electrolytes</h3>
+      <span class="pill pill-green">Excellent</span>
+    </div>
+    <table class="data-table">
+      <tr><th>Test</th><th>Your Value</th><th>Normal Range</th><th>Status</th></tr>
+      <tr><td>Creatinine</td><td class="val-normal">0.89 mg/dL</td><td>0.7–1.2</td><td>✅ Normal</td></tr>
+      <tr><td>eGFR (Kidney Filtration)</td><td class="val-normal">106.80 mL/min/1.73m²</td><td>&gt;60</td><td>✅ Excellent</td></tr>
+      <tr><td>Urea</td><td class="val-normal">23.90 mg/dL</td><td>13–43</td><td>✅ Normal</td></tr>
+      <tr><td>Blood Urea Nitrogen</td><td class="val-normal">11.2 mg/dL</td><td>8.0–23.0</td><td>✅ Normal</td></tr>
+      <tr><td>Uric Acid</td><td class="val-normal">6.21 mg/dL</td><td>3.5–7.2</td><td>✅ Normal</td></tr>
+      <tr><td>Calcium</td><td class="val-normal">9.77 mg/dL</td><td>8.6–10</td><td>✅ Normal</td></tr>
+      <tr><td>Phosphorus</td><td class="val-normal">2.55 mg/dL</td><td>2.5–4.5</td><td>✅ Normal</td></tr>
+    </table>
+    <div class="highlight green">
+      <strong>Bottom line:</strong> Kidneys are functioning at 106% of normal filtration capacity. No kidney disease, no gout risk (uric acid is safe). Excellent kidney health.
+    </div>
+  </div>
+
+  <!-- ══════════════════════ THYROID ══════════════════════ -->
+  <div class="section-title">🦋 Thyroid Profile</div>
+
+  <div class="card good">
+    <div class="card-header">
+      <h3>Thyroid Panel (T3, T4, TSH)</h3>
+      <span class="pill pill-green">Perfectly Normal</span>
+    </div>
+    <table class="data-table">
+      <tr><th>Test</th><th>Your Value</th><th>Normal Range</th><th>Status</th></tr>
+      <tr><td>T3 (Triiodothyronine)</td><td class="val-normal">131 ng/dL</td><td>84.6–202</td><td>✅ Normal</td></tr>
+      <tr><td>T4 (Thyroxine)</td><td class="val-normal">8.54 µg/dL</td><td>5.12–14.06</td><td>✅ Normal</td></tr>
+      <tr><td>TSH (Ultrasensitive)</td><td class="val-normal">2.360 µIU/mL</td><td>0.270–4.20</td><td>✅ Normal</td></tr>
+    </table>
+    <div class="highlight green">
+      <strong>Bottom line:</strong> No hypothyroidism, no hyperthyroidism. Thyroid is working perfectly — no medication needed.
+    </div>
+  </div>
+
+  <!-- ══════════════════════ VITAMINS ══════════════════════ -->
+  <div class="section-title">💊 Vitamins & Nutrition</div>
+
+  <div class="card warn">
+    <div class="card-header">
+      <h3>Vitamin D & B12</h3>
+      <span class="pill pill-yellow">B12 — Monitor Closely</span>
+    </div>
+    <table class="data-table">
+      <tr><th>Test</th><th>Your Value</th><th>Normal Range</th><th>Status</th></tr>
+      <tr><td>Vitamin D (25-OH)</td><td class="val-normal">39.8 ng/mL</td><td>30–100 (Sufficient)</td><td>✅ Sufficient</td></tr>
+      <tr><td>Vitamin B12</td><td class="val-border">259 pg/mL</td><td>197–771</td><td>⚠️ Low-Normal (Lower half)</td></tr>
+    </table>
+    <div class="highlight yellow">
+      <strong>Vitamin B12 at 259 is within range but in the lower half</strong> — as a vegetarian, B12 is found almost exclusively in animal products. Combined with your mild macrocytosis (enlarged RBCs), this pattern is consistent with subclinical B12 insufficiency. Supplementation is advisable.
+    </div>
+    <div class="highlight green" style="margin-top:8px">
+      <strong>Vitamin D at 39.8 is good</strong> — you are in the sufficient range. Continue adequate sun exposure and maintain current dietary intake.
+    </div>
+  </div>
+
+  <!-- ══════════════════════ PROSTATE ══════════════════════ -->
+  <div class="section-title">🧬 Prostate & Urine</div>
+
+  <div class="card good">
+    <div class="card-header">
+      <h3>PSA (Prostate Cancer Marker) & Urine</h3>
+      <span class="pill pill-green">All Clear</span>
+    </div>
+    <table class="data-table">
+      <tr><th>Test</th><th>Your Value</th><th>Normal Range</th><th>Status</th></tr>
+      <tr><td>Total PSA (Prostate marker)</td><td class="val-normal">0.329 ng/mL</td><td>&lt;2 ng/mL</td><td>✅ Excellent — Very Low</td></tr>
+      <tr><td>Urine Protein</td><td class="val-normal">Negative</td><td>Negative</td><td>✅ Normal</td></tr>
+      <tr><td>Urine Glucose</td><td class="val-normal">Normal</td><td>Negative</td><td>✅ Normal</td></tr>
+      <tr><td>Pus Cells</td><td class="val-normal">1–2 /hpf</td><td>0–5</td><td>✅ Normal</td></tr>
+      <tr><td>RBC in Urine</td><td class="val-normal">0 /hpf</td><td>0–2</td><td>✅ Normal</td></tr>
+      <tr><td>Nitrite / Infection</td><td class="val-normal">Negative</td><td>Negative</td><td>✅ No UTI</td></tr>
+    </table>
+    <div class="highlight green">
+      <strong>PSA of 0.329 is extremely low</strong> — excellent news. No prostate enlargement or cancer concern. Urine analysis is completely clean — no infection, no kidney leak, no blood.
+    </div>
+  </div>
+
+  <!-- ══════════════════════ ABDOMEN ULTRASOUND ══════════════════════ -->
+  <div class="section-title">🩺 Abdominal Ultrasound</div>
+
+  <div class="card good">
+    <div class="card-header">
+      <h3>USG Abdomen & Pelvis</h3>
+      <span class="pill pill-green">No Abnormality</span>
+    </div>
+    <table class="data-table">
+      <tr><th>Organ</th><th>Findings</th><th>Status</th></tr>
+      <tr><td>Liver</td><td>Normal size, shape, echotexture. No focal lesion.</td><td>✅ Normal</td></tr>
+      <tr><td>Gall Bladder</td><td>No stones, no wall thickening.</td><td>✅ Normal</td></tr>
+      <tr><td>Spleen</td><td>Normal size and texture.</td><td>✅ Normal</td></tr>
+      <tr><td>Pancreas</td><td>Normal. No ductal dilatation or calcification.</td><td>✅ Normal</td></tr>
+      <tr><td>Right Kidney</td><td>Normal. No stones, no hydronephrosis.</td><td>✅ Normal</td></tr>
+      <tr><td>Left Kidney</td><td>Normal. No stones, no hydronephrosis.</td><td>✅ Normal</td></tr>
+      <tr><td>Urinary Bladder</td><td>Normal. No stones.</td><td>✅ Normal</td></tr>
+      <tr><td>Prostate</td><td>Normal size and echotexture.</td><td>✅ Normal</td></tr>
+      <tr><td>Aorta / IVC</td><td>Appear normal.</td><td>✅ Normal</td></tr>
+    </table>
+    <div class="highlight green">
+      <strong>Impression: No significant abnormality detected.</strong> All abdominal organs are structurally healthy. No stones, tumors, cysts or enlarged lymph nodes.
+    </div>
+  </div>
+
+  <!-- ══════════════════════ LIFESTYLE RECOMMENDATIONS ══════════════════════ -->
+  <div class="section-title">🌿 Lifestyle Recommendations (Vegetarian Diet)</div>
+
+  <div class="highlight blue" style="margin-bottom:16px; font-size:14px;">
+    <strong>Note:</strong> These recommendations are tailored specifically for you as a vegetarian, focusing on your key concerns: high LDL cholesterol, low HDL, mild eosinophilia, and borderline B12. These are evidence-based suggestions — please discuss with your doctor before starting any supplement or making major dietary changes.
+  </div>
+
+  <div class="lifestyle-grid">
+
+    <div class="ls-card" style="border-top: 4px solid var(--red);">
+      <h4>🥗 Diet — Reduce Bad Cholesterol (LDL)</h4>
+      <ul>
+        <li><strong>Avoid:</strong> Coconut oil, palm oil, ghee in excess, full-fat dairy, fried foods, bakery items (trans fats)</li>
+        <li><strong>Use:</strong> Olive oil, mustard oil, cold-pressed groundnut oil (in moderation)</li>
+        <li><strong>Eat more:</strong> Oats (beta-glucan lowers LDL), barley, psyllium husk (isabgol)</li>
+        <li><strong>Add daily:</strong> 1 tsp flaxseeds + 5–6 walnuts (plant-based omega-3 lowers LDL)</li>
+        <li><strong>Include:</strong> Rajma, chole, moong — soluble fibre binds cholesterol</li>
+        <li><strong>Reduce:</strong> White rice, maida-based foods — replace with millets (jowar, bajra, ragi)</li>
+        <li><strong>Eat more:</strong> Amla, berries, tomatoes — antioxidants protect arteries</li>
+      </ul>
+    </div>
+
+    <div class="ls-card" style="border-top: 4px solid var(--green);">
+      <h4>💚 Diet — Raise Good Cholesterol (HDL)</h4>
+      <ul>
+        <li><strong>Add:</strong> 1 tablespoon of extra-virgin olive oil daily</li>
+        <li><strong>Include:</strong> Avocado (if available), nuts (almonds, walnuts) — raise HDL naturally</li>
+        <li><strong>Drink:</strong> Green tea (2 cups/day) — shown to improve HDL levels</li>
+        <li><strong>Avoid:</strong> Refined sugar, sweetened drinks — these lower HDL</li>
+        <li><strong>Add:</strong> Fenugreek seeds (methi) soaked overnight — known to improve lipid profile</li>
+        <li><strong>Spices:</strong> Turmeric + black pepper daily — anti-inflammatory, helps cholesterol</li>
+      </ul>
+    </div>
+
+    <div class="ls-card" style="border-top: 4px solid var(--blue);">
+      <h4>🏃 Exercise Plan</h4>
+      <ul>
+        <li><strong>Aerobic (5 days/week):</strong> Brisk walking 45 min OR cycling 30 min — single most effective way to raise HDL</li>
+        <li><strong>Strength training (2 days/week):</strong> Body weight exercises — improves insulin sensitivity</li>
+        <li><strong>Yoga (daily, 20 min):</strong> Especially pranayama — reduces cortisol, improves lipid metabolism</li>
+        <li><strong>Target:</strong> Minimum 150 min moderate exercise per week</li>
+        <li><strong>Avoid:</strong> Prolonged sitting — take a 5-min walk every 90 minutes at your desk</li>
+        <li><strong>Note:</strong> Regular aerobic exercise can raise HDL by 5–10% within 2–3 months</li>
+      </ul>
+    </div>
+
+    <div class="ls-card" style="border-top: 4px solid var(--yellow);">
+      <h4>💊 Vitamin B12 (Vegetarian Priority)</h4>
+      <ul>
+        <li><strong>Supplement:</strong> Methylcobalamin 1000 mcg/day (sublingual/oral) — discuss with doctor</li>
+        <li><strong>Food sources:</strong> Fermented foods (idli, dosa, dhokla), fortified milk/cereal</li>
+        <li><strong>Dairy:</strong> Include paneer, curd, milk daily — small amounts of B12</li>
+        <li><strong>Spirulina:</strong> Add 1 tsp spirulina powder to smoothie/juice — plant B12 source</li>
+        <li><strong>Recheck B12 and MCV</strong> after 3 months of supplementation</li>
+        <li><strong>Also check:</strong> Serum Folate — macrocytosis can be folate-related too</li>
+      </ul>
+    </div>
+
+    <div class="ls-card" style="border-top: 4px solid #8b5cf6;">
+      <h4>🔬 Eosinophilia — Anti-Allergy / Anti-Parasite</h4>
+      <ul>
+        <li><strong>Investigate:</strong> Stool microscopy for ova and parasites (intestinal worms)</li>
+        <li><strong>Identify allergies:</strong> Track if you have seasonal sneezing, skin rashes, or food intolerances</li>
+        <li><strong>Food hygiene:</strong> Wash all vegetables/fruits thoroughly; avoid raw/uncooked foods</li>
+        <li><strong>Drink:</strong> Only filtered/boiled water</li>
+        <li><strong>Avoid:</strong> Street food — risk of parasite contamination</li>
+        <li><strong>De-worming:</strong> Doctor may recommend Albendazole 400 mg single dose after investigation</li>
+      </ul>
+    </div>
+
+    <div class="ls-card" style="border-top: 4px solid #0f766e;">
+      <h4>🌞 Vitamin D Maintenance</h4>
+      <ul>
+        <li><strong>Sun exposure:</strong> 20–30 minutes of morning sunlight (9–11 AM) on arms and legs, 3–4 days/week</li>
+        <li><strong>Food sources:</strong> Fortified milk, mushrooms (sun-dried), fortified cereals</li>
+        <li><strong>Current level (39.8) is good</strong> — maintain, do not let it drop below 30</li>
+        <li><strong>Recheck annually</strong> with your full body health check</li>
+        <li><strong>Calcium-rich foods:</strong> Ragi, sesame seeds (til), green leafy vegetables, milk — supports bone health</li>
+      </ul>
+    </div>
+
+    <div class="ls-card" style="border-top: 4px solid #dc2626;">
+      <h4>🚭 General Habits</h4>
+      <ul>
+        <li><strong>Sleep:</strong> 7–8 hours consistently — sleep deprivation raises LDL and lowers HDL</li>
+        <li><strong>Stress management:</strong> Chronic stress raises cortisol → raises LDL. Practice meditation or pranayama</li>
+        <li><strong>Alcohol:</strong> Minimize or avoid — even moderate amounts affect lipids and liver</li>
+        <li><strong>Weight check:</strong> Maintain healthy BMI. Even 5–10% weight loss significantly improves cholesterol</li>
+        <li><strong>Hydration:</strong> 2.5–3 litres of water daily — important for kidney and liver health</li>
+      </ul>
+    </div>
+
+    <div class="ls-card" style="border-top: 4px solid #d97706;">
+      <h4>🥣 Daily Ideal Meal Pattern (Vegetarian)</h4>
+      <ul>
+        <li><strong>Morning:</strong> Soaked walnuts + almonds + 1 tsp flaxseeds + warm water with lemon</li>
+        <li><strong>Breakfast:</strong> Oats / dalia / idli with sambar (high fibre, low saturated fat)</li>
+        <li><strong>Lunch:</strong> Multigrain roti + dal + sabzi + curd + salad</li>
+        <li><strong>Evening:</strong> Green tea + handful of nuts or sprouts</li>
+        <li><strong>Dinner:</strong> Light — khichdi / millet roti + vegetable + bowl of curd</li>
+        <li><strong>Avoid:</strong> Eating after 9 PM — late meals raise triglycerides</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <!-- ══════════════════════ ACTION PLAN ══════════════════════ -->
+  <div class="section-title">📋 Your Prioritised Action Plan</div>
+
+  <div class="card" style="border-left: 5px solid #1e40af;">
+    <ul class="action-list">
+      <li>
+        <div class="action-num">1</div>
+        <div class="action-text">
+          <strong>Consult a physician/cardiologist for lipid management — within 2 weeks</strong>
+          <span>LDL of 144.84 and low HDL of 38 need a formal treatment plan. Depending on your family history and 10-year cardiovascular risk score, your doctor may consider statin therapy alongside diet and exercise. Do not delay this.</span>
+        </div>
+      </li>
+      <li>
+        <div class="action-num">2</div>
+        <div class="action-text">
+          <strong>Investigate eosinophilia — stool test + allergy evaluation</strong>
+          <span>Get a stool examination for ova and parasites. If negative, consider allergy testing. Your doctor may prescribe deworming medication as a precaution.</span>
+        </div>
+      </li>
+      <li>
+        <div class="action-num">3</div>
+        <div class="action-text">
+          <strong>Start Vitamin B12 supplementation immediately</strong>
+          <span>Methylcobalamin 1000 mcg/day. As a vegetarian, B12 deficiency is extremely common and your MCV trend (101.7) with peripheral macrocytes suggests early insufficiency. Also consider checking serum Folate.</span>
+        </div>
+      </li>
+      <li>
+        <div class="action-num">4</div>
+        <div class="action-text">
+          <strong>Begin aerobic exercise — 5 days per week, 45 minutes</strong>
+          <span>Brisk walking is free, effective, and the most proven intervention to raise HDL and lower LDL. Start within this week. Track consistency for 3 months.</span>
+        </div>
+      </li>
+      <li>
+        <div class="action-num">5</div>
+        <div class="action-text">
+          <strong>Overhaul cooking oils — switch to olive oil / mustard oil</strong>
+          <span>Replace coconut oil and excess ghee. Reduce fried foods. Add oats to daily breakfast — the beta-glucan fibre has strong LDL-lowering evidence.</span>
+        </div>
+      </li>
+      <li>
+        <div class="action-num">6</div>
+        <div class="action-text">
+          <strong>Recheck lipid profile, B12, and CBC after 3 months</strong>
+          <span>Dietary and lifestyle changes take 8–12 weeks to reflect in blood tests. Schedule a follow-up in September 2026 to evaluate progress before deciding on medication.</span>
+        </div>
+      </li>
+      <li>
+        <div class="action-num">7</div>
+        <div class="action-text">
+          <strong>Continue annual full body health checkup</strong>
+          <span>Your heart, liver, kidneys, thyroid, blood sugar and prostate are all excellent. Annual monitoring will catch any early changes before they become problems. You are doing the right thing by getting checked.</span>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <!-- ══════════════════════ FINAL VERDICT ══════════════════════ -->
+  <div class="section-title">🏁 Overall Verdict</div>
+
+  <div class="card good" style="border-left: 5px solid var(--green);">
+    <p style="font-size: 15px; line-height: 1.8;">
+      At <strong>46 years old, Mr. Alok Agrawal is in broadly good health.</strong> Your heart, liver, kidneys, thyroid, blood sugar, lungs, prostate, and urinary tract are all functioning well — a strong foundation.
+    </p>
+    <br/>
+    <p style="font-size: 15px; line-height: 1.8;">
+      However, <strong>your lipid profile is the most important concern</strong> — elevated LDL combined with low HDL is a modifiable cardiovascular risk factor that, if left unaddressed, increases your risk of heart disease over the next 10–20 years. The good news: this is very treatable with dietary changes, exercise, and if needed, low-dose medication.
+    </p>
+    <br/>
+    <p style="font-size: 15px; line-height: 1.8;">
+      The elevated eosinophils and mild macrocytosis need simple follow-up investigations. With the targeted lifestyle changes recommended above, particularly for a vegetarian, you have excellent prospects for significantly improving your cholesterol profile within 3–6 months.
+    </p>
+    <div class="highlight green" style="margin-top:16px; font-size:15px;">
+      🎯 <strong>Focus areas: Cholesterol management + Eosinophilia investigation + B12 supplementation. Everything else is excellent — keep it up!</strong>
+    </div>
+  </div>
+
+  <!-- DISCLAIMER -->
+  <div class="disclaimer">
+    ⚠️ <strong>Medical Disclaimer:</strong> This report analysis is generated for informational and educational purposes only. It is not a substitute for professional medical advice, diagnosis, or treatment. All findings and recommendations must be discussed with and confirmed by your treating physician. Laboratory values should be interpreted in the context of your complete clinical history. Apollo Clinic's terms and conditions apply to the original report.
+  </div>
+
+</div>
+
+<footer>
+  Health Report Analysis — Mr. Alok Agrawal | Generated: June 2026 | Apollo Clinic, Sadashiv Peth, Pune
+</footer>
+
+</body>
+</html>
