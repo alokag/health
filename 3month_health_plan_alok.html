@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>3-Month Health Plan — Alok Agrawal</title>
+<style>
+:root{
+  --green:#16a34a;--green-l:#dcfce7;--green-d:#14532d;
+  --red:#dc2626;--red-l:#fee2e2;
+  --yellow:#d97706;--yellow-l:#fef3c7;
+  --blue:#2563eb;--blue-l:#dbeafe;--blue-d:#1e3a8a;
+  --purple:#7c3aed;--purple-l:#ede9fe;
+  --teal:#0f766e;--teal-l:#ccfbf1;
+  --orange:#ea580c;--orange-l:#ffedd5;
+  --gray:#6b7280;--gray-l:#f3f4f6;--gray-d:#1f2937;
+  --border:#e5e7eb;--white:#fff;
+  --radius:14px;--shadow:0 2px 16px rgba(0,0,0,0.08);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#f0f4f8;color:var(--gray-d);line-height:1.65;}
+
+/* NAV */
+.sticky-nav{
+  position:sticky;top:0;z-index:100;
+  background:rgba(30,58,138,0.97);backdrop-filter:blur(8px);
+  padding:10px 20px;display:flex;gap:6px;flex-wrap:wrap;align-items:center;
+}
+.sticky-nav a{
+  color:rgba(255,255,255,0.85);text-decoration:none;font-size:12px;
+  padding:5px 12px;border-radius:20px;border:1px solid rgba(255,255,255,0.2);
+  transition:all .2s;white-space:nowrap;
+}
+.sticky-nav a:hover{background:rgba(255,255,255,0.2);color:#fff;}
+.sticky-nav .nav-brand{color:#fff;font-weight:700;font-size:14px;margin-right:8px;}
+
+/* HEADER */
+.hero{
+  background:linear-gradient(135deg,#1e3a8a 0%,#0f766e 50%,#065f46 100%);
+  color:#fff;padding:50px 24px 40px;text-align:center;
+}
+.hero .tag{
+  display:inline-block;background:rgba(255,255,255,0.15);
+  border:1px solid rgba(255,255,255,0.3);border-radius:20px;
+  padding:5px 16px;font-size:12px;letter-spacing:1px;text-transform:uppercase;margin-bottom:14px;
+}
+.hero h1{font-size:clamp(24px,5vw,40px);font-weight:800;margin-bottom:8px;}
+.hero p{font-size:15px;opacity:.85;max-width:600px;margin:0 auto 20px;}
+.hero-stats{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:16px;}
+.hero-stat{
+  background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.25);
+  border-radius:10px;padding:10px 18px;text-align:center;min-width:110px;
+}
+.hero-stat .val{font-size:22px;font-weight:800;}
+.hero-stat .lbl{font-size:11px;opacity:.75;text-transform:uppercase;letter-spacing:.5px;}
+
+/* LAYOUT */
+.wrap{max-width:1000px;margin:0 auto;padding:28px 16px 70px;}
+
+/* SECTION HEADINGS */
+.sec-title{
+  font-size:20px;font-weight:800;margin:36px 0 16px;
+  display:flex;align-items:center;gap:10px;
+}
+.sec-title::after{content:'';flex:1;height:2px;background:var(--border);border-radius:2px;}
+
+/* CARDS */
+.card{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px 22px;margin-bottom:14px;}
+.card-title{font-size:15px;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+
+/* PILLS */
+.pill{display:inline-block;font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;text-transform:uppercase;letter-spacing:.4px;}
+.pg{background:var(--green-l);color:var(--green);}
+.py{background:var(--yellow-l);color:var(--yellow);}
+.pr{background:var(--red-l);color:var(--red);}
+.pb{background:var(--blue-l);color:var(--blue);}
+.pp{background:var(--purple-l);color:var(--purple);}
+.pt{background:var(--teal-l);color:var(--teal);}
+.po{background:var(--orange-l);color:var(--orange);}
+
+/* PHASE TABS */
+.phases{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px;}
+.phase-card{
+  border-radius:var(--radius);padding:18px 16px;text-align:center;cursor:pointer;
+  border:2px solid transparent;transition:all .25s;
+}
+.phase-card.p1{background:linear-gradient(135deg,#dbeafe,#ede9fe);border-color:#93c5fd;}
+.phase-card.p2{background:linear-gradient(135deg,#dcfce7,#ccfbf1);border-color:#6ee7b7;}
+.phase-card.p3{background:linear-gradient(135deg,#fef3c7,#ffedd5);border-color:#fcd34d;}
+.phase-card h3{font-size:15px;font-weight:800;margin-bottom:4px;}
+.phase-card .ph-sub{font-size:12px;color:var(--gray);margin-bottom:8px;}
+.phase-card .ph-goal{font-size:13px;font-weight:600;}
+.phase-card.p1 .ph-goal{color:var(--blue);}
+.phase-card.p2 .ph-goal{color:var(--green);}
+.phase-card.p3 .ph-goal{color:var(--yellow);}
+
+/* MEAL TABLE */
+.meal-table{width:100%;border-collapse:collapse;font-size:13px;}
+.meal-table th{background:var(--gray-l);padding:9px 12px;text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--gray);}
+.meal-table td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;}
+.meal-table tr:last-child td{border-bottom:none;}
+.meal-table tr:hover td{background:#fafafa;}
+.time-badge{
+  display:inline-block;background:var(--blue-l);color:var(--blue);
+  font-size:11px;font-weight:700;padding:2px 8px;border-radius:6px;white-space:nowrap;
+}
+.food-name{font-weight:600;font-size:13.5px;}
+.food-note{font-size:12px;color:var(--gray);margin-top:3px;}
+.food-why{
+  font-size:11.5px;background:var(--green-l);color:var(--green-d);
+  padding:3px 8px;border-radius:6px;display:inline-block;margin-top:4px;
+}
+
+/* WORKOUT TABLE */
+.wo-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-top:10px;}
+.wo-day{border-radius:10px;padding:14px 12px;text-align:center;}
+.wo-day.active{background:linear-gradient(135deg,var(--blue-l),var(--purple-l));border:1px solid #93c5fd;}
+.wo-day.rest{background:var(--green-l);border:1px solid #bbf7d0;}
+.wo-day .day-name{font-size:11px;font-weight:700;text-transform:uppercase;color:var(--gray);margin-bottom:6px;}
+.wo-day .wo-type{font-size:13px;font-weight:700;color:var(--gray-d);margin-bottom:4px;}
+.wo-day .wo-dur{font-size:11px;color:var(--gray);}
+.wo-day.active .wo-type{color:var(--blue);}
+.wo-day.rest .wo-type{color:var(--green);}
+
+/* EXERCISE LIST */
+.ex-list{list-style:none;padding:0;}
+.ex-list li{
+  display:flex;align-items:flex-start;gap:12px;
+  padding:10px 0;border-bottom:1px solid var(--border);
+}
+.ex-list li:last-child{border-bottom:none;}
+.ex-icon{font-size:22px;min-width:32px;text-align:center;}
+.ex-body strong{font-size:14px;display:block;margin-bottom:2px;}
+.ex-body span{font-size:12.5px;color:var(--gray);}
+.ex-sets{font-size:12px;font-weight:700;color:var(--blue);background:var(--blue-l);padding:2px 8px;border-radius:6px;margin-top:4px;display:inline-block;}
+
+/* DAY TIMELINE */
+.timeline{position:relative;padding-left:28px;}
+.timeline::before{content:'';position:absolute;left:10px;top:0;bottom:0;width:2px;background:var(--border);}
+.tl-item{position:relative;margin-bottom:16px;}
+.tl-dot{
+  position:absolute;left:-22px;top:4px;
+  width:14px;height:14px;border-radius:50%;border:2px solid var(--white);
+  box-shadow:0 0 0 2px var(--blue);background:var(--blue);
+}
+.tl-item.rest .tl-dot{background:var(--green);box-shadow:0 0 0 2px var(--green);}
+.tl-item.warn .tl-dot{background:var(--yellow);box-shadow:0 0 0 2px var(--yellow);}
+.tl-time{font-size:12px;font-weight:700;color:var(--blue);margin-bottom:2px;}
+.tl-item.rest .tl-time{color:var(--green);}
+.tl-item.warn .tl-time{color:var(--yellow);}
+.tl-text{font-size:13.5px;font-weight:600;}
+.tl-sub{font-size:12px;color:var(--gray);margin-top:2px;}
+
+/* TRACKER */
+.tracker-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;}
+.tracker-card{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px;}
+.tracker-card h4{font-size:14px;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+.tracker-card table{width:100%;border-collapse:collapse;font-size:12.5px;}
+.tracker-card th{background:var(--gray-l);padding:6px 8px;text-align:center;font-size:11px;color:var(--gray);}
+.tracker-card td{padding:8px;border-bottom:1px solid var(--border);text-align:center;color:var(--gray);}
+.tracker-card td:first-child{text-align:left;font-weight:600;color:var(--gray-d);}
+.input-cell{
+  width:60px;background:#f9fafb;border:1px dashed #d1d5db;
+  border-radius:4px;padding:4px;text-align:center;font-size:12px;color:var(--gray);
+}
+
+/* CHECKLIST */
+.checklist{list-style:none;padding:0;}
+.checklist li{
+  display:flex;align-items:flex-start;gap:10px;
+  padding:10px 0;border-bottom:1px solid var(--border);font-size:13.5px;
+}
+.checklist li:last-child{border-bottom:none;}
+.check-box{
+  min-width:20px;height:20px;border-radius:4px;
+  border:2px solid var(--border);background:var(--white);margin-top:2px;
+}
+
+/* HIGHLIGHT BOXES */
+.hl{border-radius:10px;padding:13px 16px;font-size:13.5px;margin:10px 0;}
+.hl-green{background:var(--green-l);color:#166534;}
+.hl-blue{background:var(--blue-l);color:#1e40af;}
+.hl-yellow{background:var(--yellow-l);color:#92400e;}
+.hl-red{background:var(--red-l);color:#991b1b;}
+.hl-purple{background:var(--purple-l);color:#5b21b6;}
+
+/* PROGRESS BAR */
+.pbar-wrap{margin:8px 0;}
+.pbar-label{display:flex;justify-content:space-between;font-size:12px;color:var(--gray);margin-bottom:4px;}
+.pbar{height:10px;background:#e5e7eb;border-radius:5px;overflow:hidden;}
+.pbar-fill{height:100%;border-radius:5px;}
+
+/* MONTH TABS */
+.month-section{margin-bottom:30px;}
+.month-header{
+  display:flex;align-items:center;gap:14px;padding:16px 20px;
+  border-radius:var(--radius);margin-bottom:16px;color:#fff;
+}
+.month-header.m1{background:linear-gradient(135deg,#1e40af,#7c3aed);}
+.month-header.m2{background:linear-gradient(135deg,#047857,#0f766e);}
+.month-header.m3{background:linear-gradient(135deg,#d97706,#dc2626);}
+.month-header .mh-num{font-size:48px;font-weight:900;opacity:.3;line-height:1;}
+.month-header .mh-text h3{font-size:18px;font-weight:800;}
+.month-header .mh-text p{font-size:13px;opacity:.85;margin-top:3px;}
+
+/* SUPPLEMENTS */
+.supp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;}
+.supp-card{
+  border-radius:10px;padding:14px 16px;border:1px solid var(--border);
+  display:flex;flex-direction:column;gap:6px;
+}
+.supp-card .s-name{font-size:14px;font-weight:700;}
+.supp-card .s-dose{font-size:12px;color:var(--blue);font-weight:600;}
+.supp-card .s-why{font-size:12px;color:var(--gray);}
+.supp-card .s-when{font-size:11.5px;background:var(--gray-l);padding:3px 8px;border-radius:6px;display:inline-block;}
+
+/* SCROLL TOP */
+.scroll-top{
+  position:fixed;bottom:24px;right:24px;
+  background:var(--blue-d);color:#fff;border:none;cursor:pointer;
+  width:44px;height:44px;border-radius:50%;font-size:18px;
+  box-shadow:0 4px 12px rgba(0,0,0,0.2);z-index:200;
+}
+
+/* PRINT */
+@media print{.sticky-nav,.scroll-top{display:none;}}
+@media(max-width:600px){
+  .phases{grid-template-columns:1fr;}
+  .meal-table th:nth-child(3),.meal-table td:nth-child(3){display:none;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="sticky-nav">
+  <span class="nav-brand">🌿 Alok's Health Plan</span>
+  <a href="#overview">Overview</a>
+  <a href="#diet">Diet</a>
+  <a href="#workout">Workout</a>
+  <a href="#dayplan">Day Plan</a>
+  <a href="#month1">Month 1</a>
+  <a href="#month2">Month 2</a>
+  <a href="#month3">Month 3</a>
+  <a href="#supplements">Supplements</a>
+  <a href="#tracker">Tracker</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="tag">Personalised 3-Month Health Plan</div>
+  <h1>Your Road to Better Health</h1>
+  <p>A structured, vegetarian-friendly diet, workout & daily routine designed to lower your LDL, raise your HDL, fix B12, resolve eosinophilia and build lasting healthy habits.</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="val">🎯</div><div class="lbl">LDL Target</div><div style="font-size:13px;opacity:.9">&lt; 100 mg/dL</div></div>
+    <div class="hero-stat"><div class="val">💚</div><div class="lbl">HDL Target</div><div style="font-size:13px;opacity:.9">&gt; 50 mg/dL</div></div>
+    <div class="hero-stat"><div class="val">🏃</div><div class="lbl">Exercise</div><div style="font-size:13px;opacity:.9">5× / week</div></div>
+    <div class="hero-stat"><div class="val">🌿</div><div class="lbl">Diet Type</div><div style="font-size:13px;opacity:.9">Vegetarian</div></div>
+    <div class="hero-stat"><div class="val">3</div><div class="lbl">Months</div><div style="font-size:13px;opacity:.9">Jul–Sep 2026</div></div>
+  </div>
+</div>
+
+<div class="wrap">
+
+<!-- ══════════ OVERVIEW ══════════ -->
+<div id="overview"></div>
+<div class="sec-title">📊 3-Month Game Plan at a Glance</div>
+
+<div class="phases">
+  <div class="phase-card p1">
+    <h3>Month 1</h3>
+    <div class="ph-sub">July 2026 · Foundation</div>
+    <div class="ph-goal">🏗️ Build habits, clean diet, start moving</div>
+    <div style="font-size:12px;margin-top:8px;color:#374151">Establish routine · Reduce bad fats · 30-min walks · B12 supplement</div>
+  </div>
+  <div class="phase-card p2">
+    <h3>Month 2</h3>
+    <div class="ph-sub">August 2026 · Momentum</div>
+    <div class="ph-goal">⚡ Increase intensity, add strength</div>
+    <div style="font-size:12px;margin-top:8px;color:#374151">Increase to 45-min walks · Add yoga · Refine diet · First recheck</div>
+  </div>
+  <div class="phase-card p3">
+    <h3>Month 3</h3>
+    <div class="ph-sub">September 2026 · Results</div>
+    <div class="ph-goal">🏆 Full routine, blood test, celebrate!</div>
+    <div style="font-size:12px;margin-top:8px;color:#374151">Full workout plan · Maintain diet · Blood retest · Review progress</div>
+  </div>
+</div>
+
+<div class="hl hl-blue">
+  <strong>Your 3 focus areas:</strong> &nbsp;①&nbsp;Lower LDL from 144 → &lt;100 &nbsp;②&nbsp;Raise HDL from 38 → &gt;50 &nbsp;③&nbsp;Fix B12 macrocytosis + resolve eosinophilia &nbsp;— all through food, movement and simple supplements.
+</div>
+
+<!-- ══════════ DIET PLAN ══════════ -->
+<div id="diet"></div>
+<div class="sec-title">🥗 Daily Diet Plan (Vegetarian)</div>
+
+<div class="card">
+  <div class="card-title">🌅 The Golden Rules</div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;">
+    <div class="hl hl-green" style="margin:0"><strong>✅ EAT MORE</strong><br/>Oats · Walnuts · Flaxseeds · Legumes · Millets · Green leafy veg · Amla · Berries · Curd · Sprouts</div>
+    <div class="hl hl-red" style="margin:0"><strong>❌ AVOID / REDUCE</strong><br/>Coconut oil · Excess ghee · Fried foods · Bakery items · White bread · Sugary drinks · Maida</div>
+    <div class="hl hl-yellow" style="margin:0"><strong>⚖️ LIMIT (not ban)</strong><br/>Ghee (1 tsp/day only) · Full-fat dairy · Rice (replace 1 meal with millets) · Jaggery · Fruit juices</div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-title">🕐 Complete Daily Meal Schedule</div>
+  <table class="meal-table">
+    <tr>
+      <th>Time</th>
+      <th>What to Eat</th>
+      <th>Why it helps</th>
+    </tr>
+    <tr>
+      <td><span class="time-badge">6:00 AM</span></td>
+      <td>
+        <div class="food-name">Wake-up ritual</div>
+        <div class="food-note">1 glass warm water + juice of ½ lemon + pinch of turmeric<br/>
+        + 5–6 walnuts (soaked overnight) + 7–8 almonds (soaked)</div>
+        <span class="food-why">Walnuts = plant omega-3 → directly lowers LDL</span>
+      </td>
+      <td>Kickstarts metabolism · Walnuts proven to lower LDL by 5–10%</td>
+    </tr>
+    <tr>
+      <td><span class="time-badge">7:00 AM</span></td>
+      <td>
+        <div class="food-name">Exercise window (see workout plan)</div>
+        <div class="food-note">Brisk walk / yoga — on empty stomach for better fat burn</div>
+        <span class="food-why">Fasted cardio improves HDL more effectively</span>
+      </td>
+      <td>Morning exercise raises HDL most effectively</td>
+    </tr>
+    <tr>
+      <td><span class="time-badge">8:00 AM</span></td>
+      <td>
+        <div class="food-name">Breakfast — Option A (Weekdays)</div>
+        <div class="food-note">1 cup overnight oats OR oat porridge (no sugar, use 1 tsp honey)<br/>
+        + 1 tsp ground flaxseeds stirred in<br/>
+        + ½ cup berries / banana / seasonal fruit<br/>
+        + 1 glass warm low-fat milk OR soy milk</div>
+        <span class="food-why">Oat beta-glucan = most proven LDL-lowering food</span>
+      </td>
+      <td>Beta-glucan from oats blocks cholesterol absorption in gut</td>
+    </tr>
+    <tr>
+      <td><span class="time-badge">8:00 AM</span></td>
+      <td>
+        <div class="food-name">Breakfast — Option B (Weekends)</div>
+        <div class="food-note">2 idli / dosa (no butter) + sambar (lentil soup, high protein)<br/>
+        + 1 small bowl of fruit<br/>
+        OR: Dalia (broken wheat) khichdi with vegetables</div>
+        <span class="food-why">Fermented foods → B12 + gut health + low saturated fat</span>
+      </td>
+      <td>Low-fat, high-fibre, fermented — perfect combination</td>
+    </tr>
+    <tr>
+      <td><span class="time-badge">10:30 AM</span></td>
+      <td>
+        <div class="food-name">Mid-morning snack</div>
+        <div class="food-note">1 cup green tea (no sugar)<br/>
+        + 1 small fruit (apple, pear, guava) OR 1 tbsp mixed seeds (pumpkin + sunflower)</div>
+        <span class="food-why">Green tea raises HDL by 2–4 mg/dL over 3 months</span>
+      </td>
+      <td>Green tea catechins improve cholesterol profile</td>
+    </tr>
+    <tr>
+      <td><span class="time-badge">1:00 PM</span></td>
+      <td>
+        <div class="food-name">Lunch — The Power Plate</div>
+        <div class="food-note">
+          🟡 1–2 millet roti / multigrain roti (jowar, bajra or ragi) — NOT only wheat<br/>
+          🟢 1 cup cooked dal (moong / masoor / toor) — cycle different dals<br/>
+          🟢 1 bowl sabzi (any seasonal vegetable, cooked in mustard/olive oil — NOT coconut)<br/>
+          🔵 ½ cup curd / raita<br/>
+          🟣 Large salad: cucumber + tomato + onion + lemon + flaxseeds<br/>
+          ❌ Skip: fried papad, pickle in excess, white rice as main carb
+        </div>
+        <span class="food-why">Dal = plant protein + soluble fibre → lowers LDL directly</span>
+      </td>
+      <td>This meal alone addresses LDL, HDL, B12 (via curd), and fibre goals</td>
+    </tr>
+    <tr>
+      <td><span class="time-badge">4:00 PM</span></td>
+      <td>
+        <div class="food-name">Evening snack</div>
+        <div class="food-note">
+          Option A: 1 cup roasted chana (Bengal gram) + 1 tsp amla powder in water<br/>
+          Option B: 1 bowl sprouts (moong/matki) with lemon + salt + coriander<br/>
+          Option C: 1 cup vegetable soup (no cream)<br/>
+          + 1 cup green tea or black coffee (no sugar)
+        </div>
+        <span class="food-why">Chana/sprouts = fibre + protein → keeps cholesterol in check</span>
+      </td>
+      <td>Avoids evening hunger bingeing on unhealthy snacks</td>
+    </tr>
+    <tr>
+      <td><span class="time-badge">8:00 PM</span></td>
+      <td>
+        <div class="food-name">Dinner — Light & Early</div>
+        <div class="food-note">
+          🟡 1 millet roti OR 1 small bowl of khichdi (rice + moong dal + ghee 1 tsp)<br/>
+          🟢 1 bowl light sabzi or palak / methi dish<br/>
+          🔵 1 small bowl curd (for B12 + gut health)<br/>
+          ❌ NO heavy fried food at dinner · Stop eating by 9 PM
+        </div>
+        <span class="food-why">Methi/fenugreek proven to lower cholesterol naturally</span>
+      </td>
+      <td>Light dinner = better digestion, lower triglycerides, better sleep</td>
+    </tr>
+    <tr>
+      <td><span class="time-badge">9:30 PM</span></td>
+      <td>
+        <div class="food-name">Bedtime ritual</div>
+        <div class="food-note">1 glass warm turmeric milk (haldi doodh) — low fat milk, ½ tsp turmeric, pinch black pepper<br/>
+        OR: Warm chamomile/ashwagandha tea</div>
+        <span class="food-why">Turmeric = anti-inflammatory, supports cholesterol metabolism</span>
+      </td>
+      <td>Promotes deep sleep · Black pepper activates turmeric absorption 20×</td>
+    </tr>
+  </table>
+</div>
+
+<div class="card">
+  <div class="card-title">💧 Hydration Rules</div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;">
+    <div class="hl hl-blue" style="margin:0;font-size:13px;"><strong>Daily Water Goal: 3 litres</strong><br/>Start with 2 glasses at wake-up. Keep a 1-litre bottle visible at your desk.</div>
+    <div class="hl hl-green" style="margin:0;font-size:13px;"><strong>Best drinks:</strong><br/>Water · Green tea · Coconut water (1/day) · Buttermilk (chaas) · Lemon water</div>
+    <div class="hl hl-red" style="margin:0;font-size:13px;"><strong>Avoid completely:</strong><br/>Packaged fruit juices · Cola / soda · Sugary chai 3× daily · Milkshakes with sugar</div>
+  </div>
+</div>
+
+<!-- WEEKLY MEAL VARIATIONS -->
+<div class="card">
+  <div class="card-title">📅 Weekly Variety — Dinner Rotation (to avoid boredom)</div>
+  <table class="meal-table">
+    <tr><th>Day</th><th>Dinner</th><th>Special benefit</th></tr>
+    <tr><td><strong>Monday</strong></td><td>Moong dal khichdi + ghee + papad + curd</td><td>Easy to digest, high protein</td></tr>
+    <tr><td><strong>Tuesday</strong></td><td>Bajra roti + methi sabzi + dal</td><td>Methi lowers cholesterol</td></tr>
+    <tr><td><strong>Wednesday</strong></td><td>Vegetable daliya + raita + fruit</td><td>High fibre, light on digestion</td></tr>
+    <tr><td><strong>Thursday</strong></td><td>Rajma (kidney beans) + jowar roti + salad</td><td>Rajma = top soluble fibre food</td></tr>
+    <tr><td><strong>Friday</strong></td><td>Palak paneer (low oil) + 1 roti + curd</td><td>Iron + calcium + B12 from paneer</td></tr>
+    <tr><td><strong>Saturday</strong></td><td>Chole (chickpeas) + 1 roti + lassi (thin)</td><td>High fibre, heart healthy</td></tr>
+    <tr><td><strong>Sunday</strong></td><td>Family meal — millet pulao + raita + salad</td><td>Enjoy without guilt — millets are ideal</td></tr>
+  </table>
+</div>
+
+<!-- ══════════ WORKOUT PLAN ══════════ -->
+<div id="workout"></div>
+<div class="sec-title">🏃 Workout Plan (Progressive 3-Month)</div>
+
+<div class="card">
+  <div class="card-title">📅 Weekly Workout Schedule</div>
+  <div class="wo-grid">
+    <div class="wo-day active"><div class="day-name">Monday</div><div class="wo-type">🚶 Brisk Walk</div><div class="wo-dur">30–45 min</div></div>
+    <div class="wo-day active"><div class="day-name">Tuesday</div><div class="wo-type">🧘 Yoga + Strength</div><div class="wo-dur">40 min</div></div>
+    <div class="wo-day active"><div class="day-name">Wednesday</div><div class="wo-type">🚶 Brisk Walk</div><div class="wo-dur">30–45 min</div></div>
+    <div class="wo-day active"><div class="day-name">Thursday</div><div class="wo-type">🧘 Yoga + Strength</div><div class="wo-dur">40 min</div></div>
+    <div class="wo-day active"><div class="day-name">Friday</div><div class="wo-type">🚴 Cycling / Walk</div><div class="wo-dur">40–50 min</div></div>
+    <div class="wo-day active"><div class="day-name">Saturday</div><div class="wo-type">🏊 Full Body</div><div class="wo-dur">50 min</div></div>
+    <div class="wo-day rest"><div class="day-name">Sunday</div><div class="wo-type">🌿 Active Rest</div><div class="wo-dur">Light walk / stretching</div></div>
+  </div>
+  <div class="hl hl-blue" style="margin-top:12px;font-size:13px;">
+    <strong>Total per week:</strong> ~5 active sessions · ~3.5–4 hours of exercise · 1 rest day · 1 light active day<br/>
+    This meets and exceeds the WHO recommendation of 150 min/week moderate aerobic activity.
+  </div>
+</div>
+
+<!-- MONTH 1 WORKOUT -->
+<div class="month-section" id="month1">
+  <div class="month-header m1">
+    <div class="mh-num">01</div>
+    <div class="mh-text">
+      <h3>Month 1 — July 2026 · Foundation</h3>
+      <p>Goal: Build the habit, don't strain. Focus on consistency over intensity.</p>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;">
+    <div class="card">
+      <div class="card-title">🚶 Walking Days (Mon, Wed, Fri)</div>
+      <ul class="ex-list">
+        <li><div class="ex-icon">👟</div><div class="ex-body"><strong>Brisk Walk</strong><span>30 minutes at moderate pace (can hold a conversation but slightly breathless)</span><div class="ex-sets">Target: 3,500–4,000 steps/session</div></div></li>
+        <li><div class="ex-icon">🤸</div><div class="ex-body"><strong>Warm-up & Cool-down</strong><span>5 min light stretching before + 5 min slow walk + stretching after</span><div class="ex-sets">Always do this — prevents injury</div></div></li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title">🧘 Yoga Days (Tue, Thu)</div>
+      <ul class="ex-list">
+        <li><div class="ex-icon">🌬️</div><div class="ex-body"><strong>Pranayama (Breathing)</strong><span>Anulom Vilom 5 min + Kapalbhati 3 min + Bhramari 2 min</span><div class="ex-sets">Reduces cortisol → lowers LDL</div></div></li>
+        <li><div class="ex-icon">🧘</div><div class="ex-body"><strong>Surya Namaskar (Sun Salutation)</strong><span>5 rounds slowly, focus on form not speed</span><div class="ex-sets">Full body · Raises HDL</div></div></li>
+        <li><div class="ex-icon">🤲</div><div class="ex-body"><strong>Basic Asanas</strong><span>Tadasana · Vrikshasana · Trikonasana · Balasana · Savasana</span><div class="ex-sets">15 minutes total</div></div></li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title">💪 Saturday — Full Body Bodyweight</div>
+      <ul class="ex-list">
+        <li><div class="ex-icon">⬇️</div><div class="ex-body"><strong>Squats</strong><span>Stand, feet shoulder-width, squat like sitting on a chair</span><div class="ex-sets">3 sets × 10 reps · Rest 60 sec</div></div></li>
+        <li><div class="ex-icon">🏠</div><div class="ex-body"><strong>Wall Push-ups</strong><span>Standing push-up against wall (easier on joints)</span><div class="ex-sets">3 sets × 10 reps</div></div></li>
+        <li><div class="ex-icon">🦵</div><div class="ex-body"><strong>Standing Lunges</strong><span>Step forward, lower knee towards floor, alternate legs</span><div class="ex-sets">2 sets × 8 reps each leg</div></div></li>
+        <li><div class="ex-icon">🛋️</div><div class="ex-body"><strong>Chair Dips</strong><span>Hands on chair edge, lower and raise body</span><div class="ex-sets">2 sets × 8 reps</div></div></li>
+        <li><div class="ex-icon">🧘</div><div class="ex-body"><strong>Finish: 10 min Savasana</strong><span>Complete relaxation — reduces cortisol</span></div></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- MONTH 2 WORKOUT -->
+<div class="month-section" id="month2">
+  <div class="month-header m2">
+    <div class="mh-num">02</div>
+    <div class="mh-text">
+      <h3>Month 2 — August 2026 · Momentum</h3>
+      <p>Increase duration & add light resistance. Your body is ready now.</p>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;">
+    <div class="card">
+      <div class="card-title">🚶 Walking Days — Upgraded</div>
+      <ul class="ex-list">
+        <li><div class="ex-icon">👟</div><div class="ex-body"><strong>Brisk Walk — Extended</strong><span>Increase to 45 minutes. Add 2-minute fast walking intervals every 10 min</span><div class="ex-sets">Target: 5,000 steps/session</div></div></li>
+        <li><div class="ex-icon">🚴</div><div class="ex-body"><strong>Optional: Cycle on Wednesdays</strong><span>30–40 minutes cycling (stationary or outdoor)</span><div class="ex-sets">Higher HDL impact than walking</div></div></li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title">🧘 Yoga — Advanced</div>
+      <ul class="ex-list">
+        <li><div class="ex-icon">🌬️</div><div class="ex-body"><strong>Pranayama</strong><span>Increase to 15 minutes total. Add Ujjayi breathing.</span></div></li>
+        <li><div class="ex-icon">☀️</div><div class="ex-body"><strong>Surya Namaskar</strong><span>Increase to 10 rounds. Gradually faster pace.</span><div class="ex-sets">Excellent for cholesterol</div></div></li>
+        <li><div class="ex-icon">🤸</div><div class="ex-body"><strong>Add Asanas</strong><span>Paschimottanasana · Setu Bandha · Ardha Matsyendrasana · Virabhadrasana</span></div></li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title">💪 Saturday — Strength Upgraded</div>
+      <ul class="ex-list">
+        <li><div class="ex-icon">⬇️</div><div class="ex-body"><strong>Squats</strong><span>Now with 2-second pause at bottom</span><div class="ex-sets">3 sets × 15 reps</div></div></li>
+        <li><div class="ex-icon">💪</div><div class="ex-body"><strong>Push-ups</strong><span>Move from wall to incline (hands on table or step)</span><div class="ex-sets">3 sets × 10 reps</div></div></li>
+        <li><div class="ex-icon">🦵</div><div class="ex-body"><strong>Lunges</strong><span>Walking lunges across the room</span><div class="ex-sets">3 sets × 10 each</div></div></li>
+        <li><div class="ex-icon">🏋️</div><div class="ex-body"><strong>Plank</strong><span>Hold position on forearms</span><div class="ex-sets">3 × 20 seconds (build to 40s)</div></div></li>
+        <li><div class="ex-icon">🦴</div><div class="ex-body"><strong>Glute Bridge</strong><span>Lie on back, push hips up</span><div class="ex-sets">3 × 12 reps</div></div></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- MONTH 3 WORKOUT -->
+<div class="month-section" id="month3">
+  <div class="month-header m3">
+    <div class="mh-num">03</div>
+    <div class="mh-text">
+      <h3>Month 3 — September 2026 · Results</h3>
+      <p>Full routine in place. Blood retest at end of month. Celebrate your progress.</p>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;">
+    <div class="card">
+      <div class="card-title">🚶 Cardio — Full Mode</div>
+      <ul class="ex-list">
+        <li><div class="ex-icon">⚡</div><div class="ex-body"><strong>Interval Walking</strong><span>5 min warm-up → alternate 2 min fast / 1 min slow × 10 rounds → 5 min cool-down</span><div class="ex-sets">Total: 45–50 min · Burns 40% more calories</div></div></li>
+        <li><div class="ex-icon">🚴</div><div class="ex-body"><strong>Cycling (Wed + Sat)</strong><span>30–40 min moderate cycling</span><div class="ex-sets">Most effective for raising HDL</div></div></li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title">🧘 Yoga — Full Practice</div>
+      <ul class="ex-list">
+        <li><div class="ex-icon">☀️</div><div class="ex-body"><strong>Surya Namaskar</strong><span>12 rounds at medium pace</span><div class="ex-sets">Equivalent to 288 yoga poses/session</div></div></li>
+        <li><div class="ex-icon">🌬️</div><div class="ex-body"><strong>Pranayama</strong><span>20 minutes: Anulom Vilom + Kapalbhati + Bhastrika</span></div></li>
+        <li><div class="ex-icon">🧘</div><div class="ex-body"><strong>Hold asanas longer</strong><span>30–60 seconds per pose</span><div class="ex-sets">Builds strength + flexibility</div></div></li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title">💪 Saturday — Full Strength</div>
+      <ul class="ex-list">
+        <li><div class="ex-icon">💪</div><div class="ex-body"><strong>Floor Push-ups</strong><span>Full push-up from floor</span><div class="ex-sets">3 × 12 reps</div></div></li>
+        <li><div class="ex-icon">⬇️</div><div class="ex-body"><strong>Jump Squats (gentle)</strong><span>Regular squat + small jump at top</span><div class="ex-sets">3 × 12 reps</div></div></li>
+        <li><div class="ex-icon">🏋️</div><div class="ex-body"><strong>Plank</strong><span>Hold 45–60 seconds</span><div class="ex-sets">3 rounds</div></div></li>
+        <li><div class="ex-icon">🦴</div><div class="ex-body"><strong>Superman Hold</strong><span>Lie face down, lift arms + legs simultaneously</span><div class="ex-sets">3 × 10 reps · Back strength</div></div></li>
+        <li><div class="ex-icon">🦵</div><div class="ex-body"><strong>Step-ups</strong><span>Step up and down on a stair/step</span><div class="ex-sets">3 × 15 each leg</div></div></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ DAY PLAN ══════════ -->
+<div id="dayplan"></div>
+<div class="sec-title">🕐 Ideal Daily Schedule</div>
+
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px;">
+  <div class="card">
+    <div class="card-title">☀️ Weekday Schedule</div>
+    <div class="timeline">
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-time">5:45 AM</div><div class="tl-text">Wake Up</div><div class="tl-sub">No phone for first 10 min. Drink 2 glasses of water immediately.</div></div>
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-time">6:00 AM</div><div class="tl-text">Morning Ritual</div><div class="tl-sub">Warm lemon water + soaked walnuts + almonds. Take B12 supplement now.</div></div>
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-time">6:20 AM</div><div class="tl-text">Sunlight Exposure</div><div class="tl-sub">10–15 min on balcony/outside for Vitamin D. Light stretching.</div></div>
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-time">6:30 AM</div><div class="tl-text">Exercise (Walk / Yoga)</div><div class="tl-sub">As per that day's plan. 30–45 min. Carry water bottle.</div></div>
+      <div class="tl-item rest"><div class="tl-dot"></div><div class="tl-time">7:30 AM</div><div class="tl-text">Freshen Up</div><div class="tl-sub">Shower, get ready for work. Post-exercise cool-down if not done.</div></div>
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-time">8:00 AM</div><div class="tl-text">Breakfast</div><div class="tl-sub">Oats or idli/dosa. No skipping breakfast — essential for cholesterol management.</div></div>
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-time">10:30 AM</div><div class="tl-text">Mid-Morning Snack</div><div class="tl-sub">Green tea + fruit or seeds. Stand up from desk and walk 5 min.</div></div>
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-time">1:00 PM</div><div class="tl-text">Lunch</div><div class="tl-sub">The power plate (millet roti + dal + sabzi + curd + salad). Eat slowly. Chew well.</div></div>
+      <div class="tl-item rest"><div class="tl-dot"></div><div class="tl-time">1:30 PM</div><div class="tl-text">Post-lunch walk (optional)</div><div class="tl-sub">10 min slow walk if possible — reduces post-meal glucose spike.</div></div>
+      <div class="tl-item warn"><div class="tl-dot"></div><div class="tl-time">4:00 PM</div><div class="tl-text">Evening Snack</div><div class="tl-sub">Roasted chana OR sprouts. Avoid biscuits, namkeen, chips at all costs.</div></div>
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-time">6:00 PM</div><div class="tl-text">Desk break</div><div class="tl-sub">5-min walk every 90 minutes. Avoid 3+ hours of continuous sitting.</div></div>
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-time">8:00 PM</div><div class="tl-text">Dinner</div><div class="tl-sub">Light, early. Finish by 9 PM sharp. No phone/TV while eating.</div></div>
+      <div class="tl-item rest"><div class="tl-dot"></div><div class="tl-time">9:00 PM</div><div class="tl-text">Wind-down</div><div class="tl-sub">No screens. Read a book or listen to music. Helps reduce cortisol (which worsens cholesterol).</div></div>
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-time">9:30 PM</div><div class="tl-text">Haldi doodh</div><div class="tl-sub">Warm turmeric milk. Take Vitamin D supplement if prescribed.</div></div>
+      <div class="tl-item rest"><div class="tl-dot"></div><div class="tl-time">10:00 PM</div><div class="tl-text">Sleep</div><div class="tl-sub">7–8 hours is non-negotiable. Sleep deprivation directly raises LDL. Dark room, no phone.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🌴 Weekend Schedule</div>
+    <div class="timeline">
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-time">6:30 AM</div><div class="tl-text">Slightly relaxed wake-up</div><div class="tl-sub">Still wake before 7. Body clock consistency is important.</div></div>
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-time">7:00 AM</div><div class="tl-text">Outdoor walk / nature walk</div><div class="tl-sub">Saturday: Longer 50-min walk or park visit. Sunlight + movement.</div></div>
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-time">8:30 AM</div><div class="tl-text">Relaxed Breakfast</div><div class="tl-sub">Weekend Option B: Idli/dosa/poha + fruit + chai (1 cup is fine on weekends).</div></div>
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-time">10:00 AM</div><div class="tl-text">Meal prep</div><div class="tl-sub">Prep soaked walnuts, legumes (soak rajma/chole), stock fruits for the week.</div></div>
+      <div class="tl-item rest"><div class="tl-dot"></div><div class="tl-time">1:00 PM</div><div class="tl-text">Lunch — enjoy family meal</div><div class="tl-sub">Follow the power plate. You can have 1 non-plan treat (pani puri, etc.) — moderation, not deprivation.</div></div>
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-time">3:00 PM</div><div class="tl-text">Saturday Strength Workout</div><div class="tl-sub">The full bodyweight session. Take your time. 50 min total.</div></div>
+      <div class="tl-item warn"><div class="tl-dot"></div><div class="tl-time">5:00 PM</div><div class="tl-text">Sunday: Active Rest</div><div class="tl-sub">Gentle walk 20 min + stretching + 10 min meditation. No high-intensity.</div></div>
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-time">7:30 PM</div><div class="tl-text">Dinner — Early</div><div class="tl-sub">Light Sunday dinner before 8 PM. Great for Monday morning energy.</div></div>
+      <div class="tl-item rest"><div class="tl-dot"></div><div class="tl-time">9:00 PM</div><div class="tl-text">Weekly Review</div><div class="tl-sub">Fill in your tracker (see below). Check what went well, what to improve. 5 minutes only.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ SUPPLEMENTS ══════════ -->
+<div id="supplements"></div>
+<div class="sec-title">💊 Recommended Supplements</div>
+
+<div class="hl hl-yellow">
+  <strong>Important:</strong> Please confirm all supplements with your doctor before starting, especially if you are on any medication. These are evidence-based recommendations based on your lab reports.
+</div>
+
+<div class="supp-grid" style="margin-top:14px;">
+  <div class="supp-card" style="border-top:4px solid var(--blue);">
+    <div class="s-name">🔵 Methylcobalamin (B12)</div>
+    <div class="s-dose">1000 mcg / day</div>
+    <div class="s-why">Your MCV is 101.7 with peripheral macrocytes — clear early B12 insufficiency. As a vegetarian, B12 from diet alone is insufficient.</div>
+    <div class="s-when">⏰ Morning, with water, before breakfast</div>
+  </div>
+  <div class="supp-card" style="border-top:4px solid var(--yellow);">
+    <div class="s-name">🟡 Omega-3 (Flaxseed / Algal)</div>
+    <div class="s-dose">1 tbsp ground flaxseed in food daily OR algal oil 250mg DHA</div>
+    <div class="s-why">Plant-based omega-3 (ALA from flax, DHA from algae) directly lowers LDL and raises HDL. Fish oil avoided as you are vegetarian.</div>
+    <div class="s-when">⏰ With meals (flax in food, oil cap with dinner)</div>
+  </div>
+  <div class="supp-card" style="border-top:4px solid var(--green);">
+    <div class="s-name">🟢 Vitamin D3</div>
+    <div class="s-dose">Only if doctor recommends (current level 39.8 is good)</div>
+    <div class="s-why">Your level is sufficient (39.8). Maintain with sunlight + food. Supplement only if it drops below 30 on recheck.</div>
+    <div class="s-when">⏰ With fatty meal if prescribed (fat-soluble)</div>
+  </div>
+  <div class="supp-card" style="border-top:4px solid var(--purple);">
+    <div class="s-name">🟣 Psyllium Husk (Isabgol)</div>
+    <div class="s-dose">1 tsp in water before lunch and dinner</div>
+    <div class="s-why">Soluble fibre that directly binds LDL cholesterol in the gut before absorption. One of the most proven natural LDL reducers. Meta-analyses show 5–10% LDL reduction.</div>
+    <div class="s-when">⏰ 30 min before lunch + dinner with a full glass of water</div>
+  </div>
+  <div class="supp-card" style="border-top:4px solid var(--teal);">
+    <div class="s-name">🩵 Folic Acid (Folate)</div>
+    <div class="s-dose">Get serum folate tested first</div>
+    <div class="s-why">Macrocytosis can be B12 or folate deficiency. Get folate level checked. If low, supplement 400–800 mcg/day alongside B12.</div>
+    <div class="s-when">⏰ Morning with B12</div>
+  </div>
+  <div class="supp-card" style="border-top:4px solid var(--orange);">
+    <div class="s-name">🟠 Deworming (one-time)</div>
+    <div class="s-dose">Albendazole 400 mg — single dose (doctor prescription)</div>
+    <div class="s-why">Eosinophils at 11.5% (normal &lt;6%) is very likely due to intestinal parasites. Deworming is safe, effective, and may resolve eosinophilia completely.</div>
+    <div class="s-when">⏰ After food (once — doctor to confirm)</div>
+  </div>
+</div>
+
+<!-- ══════════ TRACKER ══════════ -->
+<div id="tracker"></div>
+<div class="sec-title">📋 Easy Progress Tracker</div>
+
+<div class="hl hl-purple" style="margin-bottom:16px;">
+  <strong>How to use this tracker:</strong> Print this page and fill in the table every Sunday evening. Takes 5 minutes. You can see your trends across 3 months. At the end of Month 3, take your blood test and compare!
+</div>
+
+<!-- BLOOD TEST TARGETS -->
+<div class="card">
+  <div class="card-title">🎯 Blood Test Targets — Compare at End of Month 3</div>
+  <table class="meal-table">
+    <tr><th>Test</th><th>Current (Jun 2026)</th><th>Target (Sep 2026)</th><th>Your Result (Sep 2026)</th></tr>
+    <tr><td><strong>LDL Cholesterol</strong></td><td style="color:var(--red);font-weight:700;">144.84 mg/dL</td><td style="color:var(--green);font-weight:700;">&lt; 100 mg/dL</td><td><span class="input-cell">_______</span></td></tr>
+    <tr><td><strong>HDL Cholesterol</strong></td><td style="color:var(--red);font-weight:700;">38 mg/dL</td><td style="color:var(--green);font-weight:700;">&gt; 50 mg/dL</td><td><span class="input-cell">_______</span></td></tr>
+    <tr><td><strong>Total Cholesterol</strong></td><td style="color:var(--yellow);font-weight:700;">202 mg/dL</td><td style="color:var(--green);font-weight:700;">&lt; 180 mg/dL</td><td><span class="input-cell">_______</span></td></tr>
+    <tr><td><strong>Eosinophils %</strong></td><td style="color:var(--red);font-weight:700;">11.5%</td><td style="color:var(--green);font-weight:700;">&lt; 6%</td><td><span class="input-cell">_______</span></td></tr>
+    <tr><td><strong>Vitamin B12</strong></td><td style="color:var(--yellow);font-weight:700;">259 pg/mL</td><td style="color:var(--green);font-weight:700;">&gt; 400 pg/mL</td><td><span class="input-cell">_______</span></td></tr>
+    <tr><td><strong>MCV (RBC size)</strong></td><td style="color:var(--yellow);font-weight:700;">101.7 fL</td><td style="color:var(--green);font-weight:700;">&lt; 100 fL</td><td><span class="input-cell">_______</span></td></tr>
+  </table>
+</div>
+
+<!-- WEEKLY TRACKER -->
+<div class="card">
+  <div class="card-title">📅 Weekly Check-in Tracker (Every Sunday)</div>
+  <div style="overflow-x:auto;">
+  <table class="meal-table">
+    <tr>
+      <th>Week</th>
+      <th>Weight (kg)</th>
+      <th>Exercise Days</th>
+      <th>Diet Score (1–10)</th>
+      <th>Energy Level (1–10)</th>
+      <th>Sleep (hrs)</th>
+      <th>Notes</th>
+    </tr>
+    <tr><td><strong>Week 1</strong> (Jul 1–7)</td><td><span class="input-cell">___</span></td><td><span class="input-cell">_ / 5</span></td><td><span class="input-cell">___</span></td><td><span class="input-cell">___</span></td><td><span class="input-cell">___</span></td><td></td></tr>
+    <tr><td><strong>Week 2</strong> (Jul 8–14)</td><td><span class="input-cell">___</span></td><td><span class="input-cell">_ / 5</span></td><td><span class="input-cell">___</span></td><td><span class="input-cell">___</span></td><td><span class="input-cell">___</span></td><td></td></tr>
+    <tr><td><strong>Week 3</strong> (Jul 15–21)</td><td><span class="input-cell">___</span></td><td><span class="input-cell">_ / 5</span></td><td><span class="input-cell">___</span></td><td><span class="input-cell">___</span></td><td><span class="input-cell">___</span></td><td></td></tr>
+    <tr><td><strong>Week 4</strong> (Jul 22–31)</td><td><span class="input-cell">___</span></td><td><span class="input-cell">_ / 5</span></td><td><span class="input-cell">___</span></td><td><span class="input-cell">___</span></td><td><span class="input-cell">___</span></td><td></td></tr>
+    <tr style="background:#f0f9ff;"><td><strong>🏁 Month 1 End</strong></td><td><span class="input-cell">___</span></td><td><span class="input-cell">__ / 20</span></td><td><span class="input-cell">avg:</span></td><td><span class="input-cell">avg:</span></td><td><span class="input-cell">avg:</span></td><td></td></tr>
+    <tr><td><strong>Week 5</strong> (Aug 1–7)</td><td><span class="input-cell">___</span></td><td><span class="input-cell">_ / 5</span></td><td><span class="input-cell">___</span></td><td><span class="input-cell">___</span></td><td><span class="input-cell">___</span></td><td></td></tr>
+    <tr><td><strong>Week 6</strong> (Aug 8–14)</td><td><span class="input-cell">___</span></td><td><span class="input-cell">_ / 5</span></td><td><span class="input-cell">___</span></td><td><span class="input-cell">___</span></td><td><span class="input-cell">___</span></td><td></td></tr>
+    <tr><td><strong>Week 7</strong> (Aug 15–21)</td><td><span class="input-cell">___</span></td><td><span class="input-cell">_ / 5</span></td><td><span class="input-cell">___</span></td><td><span class="input-cell">___</span></td><td><span class="input-cell">___</span></td><td></td></tr>
+    <tr><td><strong>Week 8</strong> (Aug 22–31)</td><td><span class="input-cell">___</span></td><td><span class="input-cell">_ / 5</span></td><td><span class="input-cell">___</span></td><td><span class="input-cell">___</span></td><td><span class="input-cell">___</span></td><td></td></tr>
+    <tr style="background:#f0fdf4;"><td><strong>🏁 Month 2 End</strong></td><td><span class="input-cell">___</span></td><td><span class="input-cell">__ / 20</span></td><td><span class="input-cell">avg:</span></td><td><span class="input-cell">avg:</span></td><td><span class="input-cell">avg:</span></td><td></td></tr>
+    <tr><td><strong>Week 9</strong> (Sep 1–7)</td><td><span class="input-cell">___</span></td><td><span class="input-cell">_ / 5</span></td><td><span class="input-cell">___</span></td><td><span class="input-cell">___</span></td><td><span class="input-cell">___</span></td><td></td></tr>
+    <tr><td><strong>Week 10</strong> (Sep 8–14)</td><td><span class="input-cell">___</span></td><td><span class="input-cell">_ / 5</span></td><td><span class="input-cell">___</span></td><td><span class="input-cell">___</span></td><td><span class="input-cell">___</span></td><td></td></tr>
+    <tr><td><strong>Week 11</strong> (Sep 15–21)</td><td><span class="input-cell">___</span></td><td><span class="input-cell">_ / 5</span></td><td><span class="input-cell">___</span></td><td><span class="input-cell">___</span></td><td><span class="input-cell">___</span></td><td></td></tr>
+    <tr><td><strong>Week 12</strong> (Sep 22–30)</td><td><span class="input-cell">___</span></td><td><span class="input-cell">_ / 5</span></td><td><span class="input-cell">___</span></td><td><span class="input-cell">___</span></td><td><span class="input-cell">___</span></td><td></td></tr>
+    <tr style="background:#fef9c3;"><td><strong>🏆 Month 3 End + Blood Test!</strong></td><td><span class="input-cell">___</span></td><td><span class="input-cell">__ / 20</span></td><td><span class="input-cell">avg:</span></td><td><span class="input-cell">avg:</span></td><td><span class="input-cell">avg:</span></td><td></td></tr>
+  </table>
+  </div>
+</div>
+
+<!-- DAILY HABITS CHECKLIST -->
+<div class="card">
+  <div class="card-title">✅ Daily Habits Checklist (Stick on your fridge or phone wallpaper)</div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;">
+    <div>
+      <div style="font-size:13px;font-weight:700;color:var(--gray);text-transform:uppercase;margin-bottom:8px;">Morning (6–9 AM)</div>
+      <ul class="checklist">
+        <li><div class="check-box"></div>2 glasses water on waking</li>
+        <li><div class="check-box"></div>Soaked walnuts + almonds eaten</li>
+        <li><div class="check-box"></div>B12 supplement taken</li>
+        <li><div class="check-box"></div>10 min sunlight exposure</li>
+        <li><div class="check-box"></div>Exercise done (walk / yoga)</li>
+        <li><div class="check-box"></div>Healthy breakfast eaten</li>
+      </ul>
+    </div>
+    <div>
+      <div style="font-size:13px;font-weight:700;color:var(--gray);text-transform:uppercase;margin-bottom:8px;">Afternoon (12–5 PM)</div>
+      <ul class="checklist">
+        <li><div class="check-box"></div>Power plate lunch (dal + millet + sabzi)</li>
+        <li><div class="check-box"></div>Curd included at lunch</li>
+        <li><div class="check-box"></div>1 cup green tea afternoon</li>
+        <li><div class="check-box"></div>Healthy snack (no chips / biscuits)</li>
+        <li><div class="check-box"></div>Got up from desk every 90 min</li>
+      </ul>
+    </div>
+    <div>
+      <div style="font-size:13px;font-weight:700;color:var(--gray);text-transform:uppercase;margin-bottom:8px;">Evening / Night (6–10 PM)</div>
+      <ul class="checklist">
+        <li><div class="check-box"></div>3 litres water consumed today</li>
+        <li><div class="check-box"></div>Dinner before 9 PM</li>
+        <li><div class="check-box"></div>No fried food at dinner</li>
+        <li><div class="check-box"></div>Haldi milk at bedtime</li>
+        <li><div class="check-box"></div>Screens off by 10 PM</li>
+        <li><div class="check-box"></div>In bed by 10 PM</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- NON-SCALE WINS -->
+<div class="card">
+  <div class="card-title">🌟 Non-Scale Wins to Track (Feel the difference before the numbers change)</div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;">
+    <div class="hl hl-green" style="margin:0;font-size:13px;">😴 <strong>Sleep quality improving?</strong><br/>Falling asleep faster, waking refreshed</div>
+    <div class="hl hl-blue" style="margin:0;font-size:13px;">⚡ <strong>Energy levels higher?</strong><br/>Less 3 PM crash, more alert throughout day</div>
+    <div class="hl hl-purple" style="margin:0;font-size:13px;">🚶 <strong>Walk getting easier?</strong><br/>Less breathlessness at same pace</div>
+    <div class="hl hl-yellow" style="margin:0;font-size:13px;">👖 <strong>Clothes fitting better?</strong><br/>Waist reducing even without weight change</div>
+    <div class="hl hl-teal" style="margin:0;font-size:13px; background:var(--teal-l);color:var(--teal)">🍎 <strong>Cravings reducing?</strong><br/>Less craving for fried/junk food after 2–3 weeks</div>
+    <div class="hl hl-green" style="margin:0;font-size:13px;">🧠 <strong>Mental clarity?</strong><br/>B12 supplementation often improves focus and mood within 3–4 weeks</div>
+  </div>
+</div>
+
+<!-- FINAL MOTIVATIONAL CARD -->
+<div class="card" style="background:linear-gradient(135deg,#1e3a8a,#0f766e);color:#fff;border:none;text-align:center;padding:32px 24px;">
+  <div style="font-size:36px;margin-bottom:10px;">🏆</div>
+  <h2 style="font-size:22px;margin-bottom:10px;">You're Already Ahead</h2>
+  <p style="opacity:.9;font-size:14px;max-width:600px;margin:0 auto 16px;">Your heart, kidneys, liver, thyroid and blood sugar are all excellent. You caught the cholesterol issue at 46 — exactly the right time to reverse it. The changes you make in the next 3 months can completely transform your lipid profile and set you up for the next 20 years of excellent health.</p>
+  <div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:16px;">
+    <div style="background:rgba(255,255,255,0.15);border-radius:10px;padding:10px 18px;font-size:13px;">📅 Retest: Last week of September 2026</div>
+    <div style="background:rgba(255,255,255,0.15);border-radius:10px;padding:10px 18px;font-size:13px;">🩺 Visit doctor: Within 2 weeks for lipid management</div>
+    <div style="background:rgba(255,255,255,0.15);border-radius:10px;padding:10px 18px;font-size:13px;">💊 Start B12: Tomorrow morning</div>
+  </div>
+</div>
+
+<div style="background:#f9fafb;border:1px solid var(--border);border-radius:var(--radius);padding:16px 20px;font-size:12px;color:var(--gray);margin-top:20px;text-align:center;">
+  ⚠️ <strong>Medical Disclaimer:</strong> This plan is based on your June 2026 lab reports and is for educational/motivational purposes. It does not replace medical advice. Please consult your physician before starting any supplement or making significant dietary/exercise changes, especially given your cholesterol levels. Individual results vary.
+</div>
+
+</div><!-- end .wrap -->
+
+<footer style="text-align:center;padding:20px;font-size:12px;color:var(--gray);border-top:1px solid var(--border);">
+  3-Month Health Plan — Mr. Alok Agrawal | Based on Apollo Clinic Report: 16 June 2026 | Plan Period: July–September 2026
+</footer>
+
+<button class="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+</body>
+</html>
